@@ -42,8 +42,13 @@ public class Principal {
                     
                     """;
             System.out.println(menu);
-            opcion = teclado.nextInt();
-            teclado.nextLine();
+            try {
+                opcion = teclado.nextInt();
+                teclado.nextLine();
+            } catch (Exception e) {
+                teclado.nextLine();
+                opcion = -1;
+            }
 
             switch (opcion) {
                 case 1:
@@ -55,9 +60,9 @@ public class Principal {
                 case 3:
                     mostrarAutoresBuscados();
                     break;
-//                case 4:
-//                    mostrarAutoresBuscadosVivos();
-//                    break;
+                case 4:
+                    mostrarAutoresBuscadosVivos();
+                    break;
 //                case 5:
 //                    mostrarLibrosBuscadosPorIdioma();
 //                    break;
@@ -128,10 +133,30 @@ public class Principal {
 
     private void mostrarAutoresBuscados(){
         todosLosAutores = autorRepository.findAll();
-
         todosLosAutores.stream()
                 .sorted(Comparator.comparing(Autor::getNombre))
                 .forEach(System.out::println);
     }
 
+    private void mostrarAutoresBuscadosVivos(){
+        System.out.println("Ingrese el año vivo de Autor(es) que desea buscar");
+        var fecha = 0;
+        try {
+            fecha = teclado.nextInt();
+            teclado.nextLine();
+        } catch (Exception e) {
+            teclado.nextLine();
+            System.out.println("Fecha invalida");
+            return;
+        }
+
+        List<Autor> autoresFiltros = autorRepository.autoresVivosPorFecha(fecha);
+        if (autoresFiltros.isEmpty()) {
+            System.out.println("No hay autores vivos en ese año.");
+        } else {
+            autoresFiltros.stream()
+                    .sorted(Comparator.comparing(Autor::getNombre))
+                    .forEach(System.out::println);
+        }
+    }
 }
