@@ -63,9 +63,9 @@ public class Principal {
                 case 4:
                     mostrarAutoresBuscadosVivos();
                     break;
-//                case 5:
-//                    mostrarLibrosBuscadosPorIdioma();
-//                    break;
+                case 5:
+                    mostrarLibrosBuscadosPorIdioma();
+                    break;
                 case 0:
                     System.out.println("Cerrando la aplicación...");
                     break;
@@ -156,6 +156,35 @@ public class Principal {
         } else {
             autoresFiltros.stream()
                     .sorted(Comparator.comparing(Autor::getNombre))
+                    .forEach(System.out::println);
+        }
+    }
+
+    private void mostrarLibrosBuscadosPorIdioma(){
+        var menu = """
+                    Introduce el idioma para buscar los libros:
+                    español
+                    inglés
+                    francés
+                    portugués
+                    """;
+        System.out.println(menu);
+        var idioma = teclado.nextLine().trim();
+        Idiomas idiomaEspanol;
+        try {
+            idiomaEspanol = Idiomas.fromEspanol(idioma);
+        } catch (IllegalArgumentException e) {
+            System.out.println("No hay libros en este idioma.");
+            return;
+        }
+
+        List<Libro> librosFiltros = libroRepository.findByIdioma(idiomaEspanol);
+
+        if (librosFiltros.isEmpty()) {
+            System.out.println("No hay libros en este idioma.");
+        } else {
+            librosFiltros.stream()
+                    .sorted(Comparator.comparing(Libro::getIdioma))
                     .forEach(System.out::println);
         }
     }
