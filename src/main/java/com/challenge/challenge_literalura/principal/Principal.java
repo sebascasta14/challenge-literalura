@@ -6,9 +6,7 @@ import com.challenge.challenge_literalura.repository.LibroRepository;
 import com.challenge.challenge_literalura.service.ConsumoAPI;
 import com.challenge.challenge_literalura.service.ConvierteDatos;
 
-import java.util.Optional;
-import java.util.Scanner;
-import java.util.ArrayList;
+import java.util.*;
 
 public class Principal {
     private ConsumoAPI consumoApi = new ConsumoAPI();
@@ -17,6 +15,10 @@ public class Principal {
     private final String URL_BASE = "http://gutendex.com/books/";
     private LibroRepository libroRepository;
     private AutorRepository autorRepository;
+    private List<Autor> todosLosAutores;
+    private List<Libro> todosLosLibros;
+
+
 
     public Principal(LibroRepository libroRepository, AutorRepository autorRepository) {
         this.libroRepository = libroRepository;
@@ -47,9 +49,9 @@ public class Principal {
                 case 1:
                     buscarLibroAPIWeb();
                     break;
-//                case 2:
-//                    mostrarLibrosBuscados();
-//                    break;
+                case 2:
+                    mostrarLibrosBuscados();
+                    break;
 //                case 3:
 //                    mostrarAutoresBuscados();
 //                    break;
@@ -114,6 +116,15 @@ public class Principal {
 
         libroRepository.save(libroNuevo);
         System.out.println(libroNuevo);
-
     }
+
+    private void mostrarLibrosBuscados(){
+        todosLosLibros = libroRepository.findAll();
+
+        todosLosLibros.stream()
+                .sorted(Comparator.comparing(Libro::getIdioma))
+                .forEach(System.out::println);
+    }
+
+
 }

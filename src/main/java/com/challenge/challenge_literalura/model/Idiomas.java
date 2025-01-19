@@ -31,4 +31,6 @@ public enum Idiomas {
         }
         throw new IllegalArgumentException("Ningun idioma encontrado: " + text);
     }
+
+
 }
