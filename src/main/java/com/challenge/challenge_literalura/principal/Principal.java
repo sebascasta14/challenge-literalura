@@ -52,9 +52,9 @@ public class Principal {
                 case 2:
                     mostrarLibrosBuscados();
                     break;
-//                case 3:
-//                    mostrarAutoresBuscados();
-//                    break;
+                case 3:
+                    mostrarAutoresBuscados();
+                    break;
 //                case 4:
 //                    mostrarAutoresBuscadosVivos();
 //                    break;
@@ -126,5 +126,12 @@ public class Principal {
                 .forEach(System.out::println);
     }
 
+    private void mostrarAutoresBuscados(){
+        todosLosAutores = autorRepository.findAll();
+
+        todosLosAutores.stream()
+                .sorted(Comparator.comparing(Autor::getNombre))
+                .forEach(System.out::println);
+    }
 
 }
